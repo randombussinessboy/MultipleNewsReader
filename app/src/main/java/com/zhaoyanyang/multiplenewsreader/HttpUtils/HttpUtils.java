@@ -70,6 +70,57 @@ public class HttpUtils {
 
     }
 
+public static void urlNewsDetails(String newsurl,final HttpCallbackListener
+        listener){
+    //不要硬编码
+    final String uri="http://api.tianapi.com/txapi/htmltext/"+"?&key="+"3a6fe062098c8b7b70ed4d7ddb45e429"+"&url="+newsurl;
 
+    new Thread(()->{
+        StringBuilder response=null;
+        HttpURLConnection httpconn=null;
+        try {
+
+            URL url = new URL(uri);
+            BufferedReader reader=null;
+
+            httpconn = (HttpURLConnection) url.openConnection();
+            httpconn.setRequestMethod("GET");
+
+            httpconn.setConnectTimeout(8000);
+            httpconn.connect();
+            Log.d("wsl","okpre");
+            if (httpconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStreamReader in = new InputStreamReader(httpconn.getInputStream(), "utf-8");
+                reader=new BufferedReader(in);
+                response=new StringBuilder();
+                String line;
+                while ((line=reader.readLine())!=null){
+                    response.append(line);
+                }
+                Log.d("wsl",response.toString());
+
+            }
+            if (listener!=null){
+                listener.onFinish(response.toString());
+            }
+
+
+        } catch (Exception e) {
+            Log.d("NetAccessYang", e.toString());
+            e.printStackTrace();
+            if (listener!=null){
+                listener.onError(e);
+            }
+
+        }
+        finally {
+            if (httpconn!=null){
+                httpconn.disconnect();
+            }
+        }
+    }).start();
+
+
+}
 
 }

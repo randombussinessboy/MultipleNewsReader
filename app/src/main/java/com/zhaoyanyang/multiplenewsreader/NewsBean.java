@@ -5,6 +5,15 @@ import android.graphics.drawable.Drawable;
 public class NewsBean {
     public String title;
     public String ctime;
+    public String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getCtime() {
         return ctime;

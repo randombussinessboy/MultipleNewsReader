@@ -12,11 +12,18 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpCallbackListener;
+import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpUtils;
+import com.zhaoyanyang.multiplenewsreader.HttpUtils.JsonUtils;
+import com.zhaoyanyang.multiplenewsreader.NewsBean;
 import com.zhaoyanyang.multiplenewsreader.R;
+import com.zzhoujay.richtext.ImageHolder;
+import com.zzhoujay.richtext.RichText;
 
 public class NewsDetailActivity extends AppCompatActivity {
     public static final String NEWS_NAME="news_name";
@@ -35,6 +42,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbar=(CollapsingToolbarLayout)
                 findViewById(R.id.collapsing_toolbar);
         ImageView newsImage=findViewById(R.id.news_details);
+        TextView textViewContent=findViewById(R.id.textViewContent);
+        RichText.initCacheDir(this);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar=getSupportActionBar();
@@ -43,11 +52,30 @@ public class NewsDetailActivity extends AppCompatActivity {
         }
         collapsingToolbar.setTitle(newsName);
         Glide.with(this).load(newsPic).into(newsImage);
-        WebView webView=findViewById(R.id.web_view);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        Log.d("网页","地址"+newsUrl);
-        webView.loadUrl(newsUrl);
+//        WebView webView=findViewById(R.id.web_view);
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.setWebViewClient(new WebViewClient());
+//        Log.d("网页","地址"+newsUrl);
+//        webView.loadUrl(newsUrl);
+        HttpUtils.urlNewsDetails(newsUrl, new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                runOnUiThread(()->{
+                    Log.d("新闻详情", response);
+                    NewsBean newsBean= JsonUtils.NewsDetailsData(response);
+                    Log.d("新闻详情", newsBean.getContent());
+                    RichText.from(newsBean.getContent()).bind(this)
+                            .showBorder(false)
+                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+                            .into(textViewContent);
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 
@@ -67,5 +95,11 @@ public class NewsDetailActivity extends AppCompatActivity {
                 Toast.makeText(NewsDetailActivity.this,"分享",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RichText.clear(this);
     }
 }

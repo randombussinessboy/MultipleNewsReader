@@ -1,7 +1,9 @@
 package com.zhaoyanyang.multiplenewsreader.HttpUtils;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.MyApplication;
 import com.zhaoyanyang.multiplenewsreader.NewsBean;
 
 import org.json.JSONArray;
@@ -42,8 +44,34 @@ public class JsonUtils {
             e.printStackTrace();
 
         }
+        Toast.makeText(MyApplication.getContext(),"未请求到有效数据",Toast.LENGTH_SHORT).show();
+        return newsList=NewsUtils.getAllNews(MyApplication.getContext());
+    }
 
-        return newsList;
+    public static NewsBean NewsDetailsData(String jsonString){
+        NewsBean newsBean=new NewsBean();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            int resultCode = jsonObject.getInt("code");
+            if (resultCode == 200) {
+                //获取新闻列表
+                JSONArray resultJsonArray = jsonObject.getJSONArray("newslist");
+                //循环列表
+                for (int i = 0; i < resultJsonArray.length(); i++) {
+
+                    JSONObject resultJsonObject = resultJsonArray.getJSONObject(i);
+                    newsBean.setContent(resultJsonObject.getString("content"));
+                    newsBean.setCtime(resultJsonObject.getString("ctime"));
+
+                }
+
+                return newsBean;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return  newsBean;
     }
 
 }
