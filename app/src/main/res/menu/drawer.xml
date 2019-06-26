@@ -4,22 +4,22 @@
         <item
             android:id="@+id/navigation_news"
             android:checked="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_import_contacts_black_24dp"
             android:title="新闻"/>
         <item
-            android:id="@+id/navigation_original"
-            android:checked="true"
-            android:icon="@mipmap/ic_launcher"
-            android:title="稍后阅读"/>
-
-        <item
             android:id="@+id/navigation_time"
-            android:icon="@mipmap/ic_launcher"
+            android:checked="true"
+            android:icon="@drawable/ic_timeline_black_24dp"
             android:title="时间"/>
 
         <item
+            android:id="@+id/navigation_read"
+            android:icon="@drawable/ic_event_available_black_24dp"
+            android:title="稍后阅读"/>
+
+        <item
             android:id="@+id/navigation_trump"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_mail_outline_black_24dp"
             android:title="特朗普速报"/>
     </group>
 </menu>

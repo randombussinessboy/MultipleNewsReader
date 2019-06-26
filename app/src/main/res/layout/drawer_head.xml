@@ -3,21 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="180dp"
     android:background="?attr/colorPrimaryDark"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="10dp"
+   >
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_wb_sunny_black_24dp" />
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginEnd="10dp"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:src="@drawable/ic_wb_sunny_black_24dp" />-->
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="70dp"
@@ -26,12 +24,19 @@
         android:layout_centerInParent="true"/>
 
     <TextView
-        android:textColor="#FFF"
-        android:layout_width="match_parent"
+        android:id="@+id/mail"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="yangzy9846@outlook.com"
+        android:textColor="#FFF"
+        android:textSize="14sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mail"
         android:text="杨兆延"
-        android:textSize="18sp"
-        android:layout_alignParentBottom="true"/>
+        android:textColor="#FFF"
+        android:textSize="14sp"/>
+
 </RelativeLayout>
