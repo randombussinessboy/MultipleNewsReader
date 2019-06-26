@@ -62,6 +62,7 @@ public class JsonUtils {
                     JSONObject resultJsonObject = resultJsonArray.getJSONObject(i);
                     newsBean.setContent(resultJsonObject.getString("content"));
                     newsBean.setCtime(resultJsonObject.getString("ctime"));
+                    newsBean.setTitle(resultJsonObject.getString("title"));
 
                 }
 
