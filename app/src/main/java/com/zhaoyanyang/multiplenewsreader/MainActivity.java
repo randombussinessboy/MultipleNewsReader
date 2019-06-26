@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.zhaoyanyang.multiplenewsreader.CustomizeView.DropListView;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
+    private ImageView tianqiImageView;
+    private boolean baitian;
 
 
     @Override
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new NewsFragment()).commit();
+
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
                 R.string.drawer_close);
@@ -35,7 +40,16 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mNavigationView = (NavigationView) findViewById(R.id.navigation);
         setupDrawerContent(mNavigationView);
-
+        baitian=true;
+//        tianqiImageView=mDrawerLayout.findViewById(R.id.imageView);
+//        tianqiImageView.setOnClickListener((V)->{
+//            baitian=!baitian;
+//            if (baitian){
+//                tianqiImageView.setImageResource(R.drawable.ic_wb_sunny_black_24dp);
+//            }else {
+//                tianqiImageView.setImageResource(R.drawable.ic_brightness_2_black_24dp);
+//            }
+//        });
 
 
 
