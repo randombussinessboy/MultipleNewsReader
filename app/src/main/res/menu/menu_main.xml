@@ -14,4 +14,11 @@
         android:title="about developer"
         app:showAsAction="never"
         />
+
+    <item
+        android:id="@+id/action_anti"
+        android:orderInCategory="100"
+        android:title="防沉迷测试"
+        app:showAsAction="never"
+        />
 </menu>

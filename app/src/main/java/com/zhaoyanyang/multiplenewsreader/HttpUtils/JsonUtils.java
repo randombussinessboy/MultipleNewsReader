@@ -75,4 +75,40 @@ public class JsonUtils {
         return  newsBean;
     }
 
+    public static ArrayList<NewsBean> NewslistDataOnRecommend(String jsonstring,int Category) {
+        ArrayList<NewsBean> newsList = new ArrayList<NewsBean>();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonstring);
+            int resultCode = jsonObject.getInt("code");
+            if (resultCode == 200) {
+                //获取新闻列表
+                JSONArray resultJsonArray = jsonObject.getJSONArray("newslist");
+                //循环列表
+                for (int i = 0; i < resultJsonArray.length(); i++) {
+                    NewsBean news = new NewsBean();
+                    JSONObject resultJsonObject = resultJsonArray.getJSONObject(i);
+                    news.setTitle(resultJsonObject.getString("title"));
+                    Log.d("新闻",news.getTitle());
+                    news.setCtime(resultJsonObject.getString("ctime"));
+                    Log.d("新闻",news.getCtime());
+                    news.setDescription(resultJsonObject.getString("description"));
+                    Log.d("新闻",news.getDescription());
+                    news.setPicurl(resultJsonObject.getString("picUrl"));
+                    Log.d("新闻",news.getPicurl());
+                    news.setUrl(resultJsonObject.getString("url"));
+                    Log.d("新闻",news.getUrl());
+                    news.setCategory(Category);
+                    newsList.add(news);
+                }
+
+                return newsList;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        Toast.makeText(MyApplication.getContext(),"未请求到有效数据",Toast.LENGTH_SHORT).show();
+        return newsList=NewsUtils.getAllNews(MyApplication.getContext());
+    }
+
 }

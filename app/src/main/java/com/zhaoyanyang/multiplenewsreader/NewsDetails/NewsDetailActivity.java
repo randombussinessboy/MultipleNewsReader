@@ -18,15 +18,20 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.zhaoyanyang.multiplenewsreader.AntiindulgenceActivity;
 import com.zhaoyanyang.multiplenewsreader.BaiduTraslate.BaiduReturnCallback;
 import com.zhaoyanyang.multiplenewsreader.BaiduTraslate.BaiduUtils;
 import com.zhaoyanyang.multiplenewsreader.BaiduTraslate.TransApi;
 import com.zhaoyanyang.multiplenewsreader.ContextUtils.MyApplication;
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.hadread;
 import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpCallbackListener;
 import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpUtils;
 import com.zhaoyanyang.multiplenewsreader.HttpUtils.JsonUtils;
+import com.zhaoyanyang.multiplenewsreader.MainActivity;
 import com.zhaoyanyang.multiplenewsreader.NewsBean;
 import com.zhaoyanyang.multiplenewsreader.R;
+
+import org.litepal.crud.DataSupport;
 
 
 public class NewsDetailActivity extends AppCompatActivity {
@@ -50,6 +55,15 @@ public class NewsDetailActivity extends AppCompatActivity {
         String newsPic=intent.getStringExtra(NEWS_PIC_URL);
         String newsUrl=intent.getStringExtra(NEWS_DETAILS_URL);
         FloatingActionButton fab_trans=findViewById(R.id.fab_trans);
+
+        if (DataSupport.findAll(hadread.class).size()>100){
+
+            Intent overnumber=new Intent(getApplicationContext(), AntiindulgenceActivity.class);
+            overnumber.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(overnumber);
+        }
+
+
 
 
 
@@ -115,7 +129,9 @@ public class NewsDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception e) {
-                        Toast.makeText(MyApplication.getContext(),"翻译出错",Toast.LENGTH_SHORT).show();
+                        runOnUiThread(()->{
+                            Toast.makeText(MyApplication.getContext(),"翻译出错",Toast.LENGTH_SHORT).show();
+                        });
                     }
                 });
 

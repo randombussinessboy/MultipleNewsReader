@@ -3,9 +3,12 @@ package com.zhaoyanyang.multiplenewsreader;
 import android.graphics.drawable.Drawable;
 
 public class NewsBean {
+
     public String title;
     public String ctime;
     public String content;
+
+
 
     public String getContent() {
         return content;
@@ -85,5 +88,15 @@ public class NewsBean {
 
     public void setNews_url(String news_url) {
         this.news_url = news_url;
+    }
+
+    private int Category;
+
+    public int getCategory() {
+        return Category;
+    }
+
+    public void setCategory(int category) {
+        Category = category;
     }
 }

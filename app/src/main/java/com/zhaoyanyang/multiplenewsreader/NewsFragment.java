@@ -34,7 +34,7 @@ public class NewsFragment extends Fragment {
 
         TestFragment fg2 = new TestFragment();
         Bundle args2 = new Bundle();
-        args2.putString("text", "13");
+        args2.putString("text", "22");
         fg2.setArguments(args2);
 
         TestFragment fg3 = new TestFragment();
@@ -47,10 +47,16 @@ public class NewsFragment extends Fragment {
         args4.putString("text", "29");
         fg4.setArguments(args4);
 
+        RecommendFragement fg5 = new RecommendFragement();
+        Bundle args5 = new Bundle();
+        args5.putString("text", "101");
+        fg5.setArguments(args5);
+
         adapter.addFragment(fg1, "国内");
         adapter.addFragment(fg2, "科技");
         adapter.addFragment(fg3, getString(R.string.jokes));
         adapter.addFragment(fg4, "AI");
+        adapter.addFragment(fg5, "推荐");
 
         mViewPager.setAdapter(adapter);
 

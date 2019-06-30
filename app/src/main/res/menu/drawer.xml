@@ -10,7 +10,7 @@
             android:id="@+id/navigation_time"
             android:checked="true"
             android:icon="@drawable/ic_timeline_black_24dp"
-            android:title="时间"/>
+            android:title="统计"/>
 
         <item
             android:id="@+id/navigation_read"
@@ -21,5 +21,10 @@
             android:id="@+id/navigation_trump"
             android:icon="@drawable/ic_mail_outline_black_24dp"
             android:title="特朗普速报"/>
+
+        <item
+            android:id="@+id/navigation_login"
+            android:icon="@drawable/ic_perm_identity_black_24dp"
+            android:title="个性化设置"/>
     </group>
 </menu>

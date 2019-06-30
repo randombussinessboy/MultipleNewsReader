@@ -9,7 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,9 +20,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.HateNews;
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.LikeBean;
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.Readlater;
+import com.zhaoyanyang.multiplenewsreader.ContextUtils.hadread;
 import com.zhaoyanyang.multiplenewsreader.CustomizeView.DropListView;
 import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpCallbackListener;
 import com.zhaoyanyang.multiplenewsreader.HttpUtils.HttpUtils;
@@ -132,6 +140,12 @@ public class TestFragment extends Fragment   implements DropListView.ILoadListen
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 /*跳转到新闻详情*/
                 NewsBean newsBean=mList.get(position);
+
+                hadread hadread=new hadread();
+                hadread.setNewsTitle(newsBean.getTitle());
+                hadread.setUrl(newsBean.getUrl());
+                hadread.setNewsCategory(Integer.parseInt(text));
+                hadread.save();
                 Intent intent=new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra(NewsDetailActivity.NEWS_NAME,newsBean.getTitle());
                 intent.putExtra(NewsDetailActivity.NEWS_DETAILS_URL,newsBean.getUrl());
@@ -140,6 +154,19 @@ public class TestFragment extends Fragment   implements DropListView.ILoadListen
 
             }
         });
+
+        lv.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                contextMenu.add(Menu.NONE, 0, 0, "屏蔽");
+                contextMenu.add(Menu.NONE, 1, 0, "加入稍后阅读");
+                contextMenu.add(Menu.NONE, 2, 0, "喜欢");
+            }
+            });
+
+
+
+
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -252,5 +279,53 @@ public class TestFragment extends Fragment   implements DropListView.ILoadListen
             }
         },page);
 
+    }
+
+    //选中菜单Item后触发
+    public boolean onContextItemSelected(MenuItem item){
+        //关键代码在这里
+        AdapterView.AdapterContextMenuInfo menuInfo;
+        menuInfo =(AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        if (getUserVisibleHint()){
+            switch (item.getItemId()){
+                case 0:
+                    //点击第一个菜单项要做的事，如获取点击listview的位置
+//                Toast.makeText(getActivity(), String.valueOf(menuInfo.position), Toast.LENGTH_LONG).show();
+                    NewsBean bean=mList.get(menuInfo.position);
+                    HateNews hateNews=new HateNews();
+                    hateNews.setNewsCategory(Integer.parseInt(text));
+                    hateNews.setNewsTitle(bean.getTitle());
+                    hateNews.setUrl(bean.getUrl());
+                    hateNews.save();
+                    mList.remove(menuInfo.position);
+
+                    /*先通知本地服务器屏蔽列表，再同步到服务器，生成简单的用户画像*/
+                    adapter.notifyDataSetChanged();
+                    break;
+                case 1:
+                    //点击第二个菜单项要做的事，如获取点击的数据
+                    //Toast.makeText(getActivity(), ""+mList.get(menuInfo.position), Toast.LENGTH_LONG).show();
+                    Readlater readlater=new Readlater();
+                    readlater.setNewsTitle(mList.get(menuInfo.position).getTitle());
+                    readlater.setNewsDescription(mList.get(menuInfo.position).getDescription());
+                    readlater.setNewsPicUrl(mList.get(menuInfo.position).getPicurl());
+                    readlater.setUrl(mList.get(menuInfo.position).getUrl());
+                    readlater.setNewsCategory(Integer.parseInt(text));
+                    readlater.save();
+                    /*加入稍后阅读*/
+                    break;
+                case 2:
+                    NewsBean bean1=mList.get(menuInfo.position);
+                    LikeBean likeBean=new LikeBean();
+                    likeBean.setNewsCategory(Integer.parseInt(text));
+                    likeBean.setNewsTitle(bean1.getTitle());
+                    likeBean.setUrl(bean1.getNews_url());
+                    likeBean.save();
+
+                    /*加入用户喜欢的栏目*/
+                    break;
+            }
+        }
+        return super.onContextItemSelected(item);
     }
 }
